@@ -8,7 +8,7 @@ import {
   useSetTrackedWallet,
   type WalletEvent,
   type GetEventsType
-} from "@workspace/api-client-react";
+} from "@/lib/api-client/api";
 
 // --- MOCK DATA FALLBACKS ---
 const MOCK_STATS = {
