@@ -16,7 +16,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useTrackerData } from "@/hooks/use-tracker";
 import { CyberCard } from "@/components/ui/cyber-card";
 import { CyberButton } from "@/components/ui/cyber-button";
-import type { GetEventsType } from "@workspace/api-client-react";
+import type { GetEventsType } from "@/lib/api-client/api";
 
 // Import the crab logo user uploaded
 import logoImg from "@assets/image_1774539769191.png";
