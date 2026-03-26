@@ -1,0 +1,10 @@
+packages:
+  "framer-motion": "For smooth layout animations and cyberpunk visual effects"
+  "date-fns": "For formatting timestamps in the terminal feed"
+  "clsx": "Utility for constructing className strings conditionally"
+  "tailwind-merge": "Utility for merging tailwind classes safely"
+  "lucide-react": "For icons"
+
+notes:
+  - "Assuming @workspace/api-client-react is correctly built and export hooks for the API endpoints."
+  - "Using a custom mock data fallback layer within the UI so it looks good even without a backend."

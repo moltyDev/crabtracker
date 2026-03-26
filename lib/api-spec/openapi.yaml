@@ -1,0 +1,208 @@
+openapi: 3.1.0
+info:
+  title: Api
+  version: 0.1.0
+  description: PumpFun Dev Fee Tracker API
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: tracker
+    description: Dev fee tracker operations
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      description: Returns server health status
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+
+  /tracker/wallet:
+    get:
+      operationId: getTrackedWallet
+      tags: [tracker]
+      summary: Get currently tracked wallet
+      responses:
+        "200":
+          description: Tracked wallet info
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TrackedWallet"
+    post:
+      operationId: setTrackedWallet
+      tags: [tracker]
+      summary: Set the wallet to track
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SetWalletRequest"
+      responses:
+        "200":
+          description: Wallet updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TrackedWallet"
+
+  /tracker/events:
+    get:
+      operationId: getEvents
+      tags: [tracker]
+      summary: Get tracked wallet events
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 50
+        - name: type
+          in: query
+          schema:
+            type: string
+            enum: [fee_claim, dex_boost, transfer, all]
+            default: all
+      responses:
+        "200":
+          description: List of events
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EventsResponse"
+
+  /tracker/stats:
+    get:
+      operationId: getStats
+      tags: [tracker]
+      summary: Get wallet stats summary
+      responses:
+        "200":
+          description: Stats summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WalletStats"
+
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+
+    TrackedWallet:
+      type: object
+      properties:
+        address:
+          type: string
+          nullable: true
+        label:
+          type: string
+          nullable: true
+        isTracking:
+          type: boolean
+        lastChecked:
+          type: string
+          nullable: true
+      required:
+        - address
+        - label
+        - isTracking
+        - lastChecked
+
+    SetWalletRequest:
+      type: object
+      properties:
+        address:
+          type: string
+        label:
+          type: string
+      required:
+        - address
+
+    WalletEvent:
+      type: object
+      properties:
+        id:
+          type: integer
+        type:
+          type: string
+          enum: [fee_claim, dex_boost, transfer]
+        txHash:
+          type: string
+        amount:
+          type: number
+        amountUsd:
+          type: number
+          nullable: true
+        description:
+          type: string
+        category:
+          type: string
+          nullable: true
+        timestamp:
+          type: string
+        walletAddress:
+          type: string
+      required:
+        - id
+        - type
+        - txHash
+        - amount
+        - amountUsd
+        - description
+        - category
+        - timestamp
+        - walletAddress
+
+    EventsResponse:
+      type: object
+      properties:
+        events:
+          type: array
+          items:
+            $ref: "#/components/schemas/WalletEvent"
+        total:
+          type: integer
+      required:
+        - events
+        - total
+
+    WalletStats:
+      type: object
+      properties:
+        totalFeesClaimed:
+          type: number
+        totalDexBoosts:
+          type: number
+        totalBoostSpend:
+          type: number
+        totalTransfers:
+          type: number
+        lastActivity:
+          type: string
+          nullable: true
+        walletBalance:
+          type: number
+          nullable: true
+      required:
+        - totalFeesClaimed
+        - totalDexBoosts
+        - totalBoostSpend
+        - totalTransfers
+        - lastActivity
+        - walletBalance
