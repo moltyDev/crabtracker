@@ -1,0 +1,61 @@
+export interface HealthStatus {
+  status: string;
+}
+
+export interface TrackedWallet {
+  address: string | null;
+  label: string | null;
+  isTracking: boolean;
+  lastChecked: string | null;
+}
+
+export interface SetWalletRequest {
+  address: string;
+  label?: string;
+}
+
+export type WalletEventType = (typeof WalletEventType)[keyof typeof WalletEventType];
+export const WalletEventType = {
+  fee_claim: "fee_claim",
+  dex_boost: "dex_boost",
+  transfer: "transfer",
+} as const;
+
+export interface WalletEvent {
+  id: number;
+  type: WalletEventType;
+  txHash: string;
+  amount: number;
+  amountUsd: number | null;
+  description: string;
+  category: string | null;
+  timestamp: string;
+  walletAddress: string;
+}
+
+export interface EventsResponse {
+  events: WalletEvent[];
+  total: number;
+}
+
+export interface WalletStats {
+  totalFeesClaimed: number;
+  totalDexBoosts: number;
+  totalBoostSpend: number;
+  totalTransfers: number;
+  lastActivity: string | null;
+  walletBalance: number | null;
+}
+
+export type GetEventsParams = {
+  limit?: number;
+  type?: GetEventsType;
+};
+
+export type GetEventsType = (typeof GetEventsType)[keyof typeof GetEventsType];
+export const GetEventsType = {
+  fee_claim: "fee_claim",
+  dex_boost: "dex_boost",
+  transfer: "transfer",
+  all: "all",
+} as const;
