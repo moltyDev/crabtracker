@@ -1,0 +1,17 @@
+{
+  "buildCommand": "bash build-vercel.sh",
+  "outputDirectory": "artifacts/devfee-tracker/dist",
+  "installCommand": "echo 'skip root install'",
+  "framework": null,
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ],
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "*" }
+      ]
+    }
+  ]
+}
